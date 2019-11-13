@@ -1,0 +1,59 @@
+#include "game_master.h"
+#include "clk/clk.h"
+
+volatile uint32_t *LED_UART_ADDR = (uint32_t *)0x40052000;
+volatile uint32_t *N64_UART_ADDR = (uint32_t *)0x40050000;
+
+char* occupancy[] =
+{
+	"1111111111111111111",
+	"1PDDDDDDDDUDDDDDDD1",
+	"1D111111111111111D1",
+	"1DDDDDDDDDCDDDDDDD1",
+	"1D11111111D111111D1",
+	"1DDDDDDDDDGDDDDDDD1",
+	"1D11111111D111111D1",
+	"1DDDDDDDDDCDDDDDDD1",
+	"1D111D1111D111D11D1",
+	"1D111D1111D111D11D1",
+	"1DDDDDDDDDUDDDDDDD1",
+	"1111111111111111111",
+	NULL
+};
+
+/*char* occupancy[] =
+{
+	"0000000000000000000",
+	"0P00000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"0000000000000000000",
+	"000000000000000000G",
+	NULL
+};*/
+
+char_color_pair_t char_color_pairs[] = {
+		{'1',  {0, 0, 75}},
+		{'P',  COLOR_WHITE},
+		{'G',  COLOR_GREEN},
+		{'U',  {0, 200, 200}},
+		{'C',  COLOR_RED},
+		{'D',  {64, 50, 0}},
+		{'\0', {0, 0, 0}}
+};
+
+int main()
+{
+	clk_init();
+	clk_set_freq_hz(CLK_FAB, 96E6);
+	clk_set_freq_hz(CLK_P0, 96E6);
+
+	GameInit(occupancy, char_color_pairs, LED_UART_ADDR, N64_UART_ADDR);
+	return 0;
+}

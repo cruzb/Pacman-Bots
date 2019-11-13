@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include "rgb_sensor.h"
+#include "drivers/mss_i2c/mss_i2c.h"
+#include "usleep.h"
+#include "rgb_util.h"
+
+int main()
+{
+	uint8_t status = config_rgb_sensor_default();
+	printf("%u\n", status);
+
+	uint16_t current_color[3] = {0,0,0};
+	while (1) {
+
+		current_color[0] = read_red();
+		current_color[1] = read_green();
+		current_color[2] = read_blue();
+
+
+		printf("Red Channel: %u\r\n", current_color[0]);
+		printf("Green Channel: %u\r\n", current_color[1]);
+		printf("Blue Channel: %u\r\n", current_color[2]);
+
+		double hsv[3] = {0,0,0};
+		double red = (double)(current_color[0]) / (double)(65535);
+		double green = (double)(current_color[1]) / (double)(65535);
+		double blue = (double)(current_color[2]) / (double)(65535);
+		rgb_to_hsv(red, green, blue, hsv);
+
+		printf("Hue: %f\r\n", hsv[0]*360);
+		printf("Saturation: %f\r\n", hsv[1]*100);
+		printf("Value: %f\r\n\n", hsv[2]*100);
+
+		if(is_valid_color(current_color) == 1) {
+			if(is_powerup(current_color)) {
+				printf("This is a POWERUP\r\n\n");
+				usleep(1000000, 96e6);
+			}
+			else if(is_cherry(current_color)) {
+				printf("This is a CHERRY\r\n\n");
+				usleep(1000000, 96e6);
+			}
+		}
+
+		usleep(10000, 96e6);
+
+	}
+
+	return 0;
+}
