@@ -35,3 +35,7 @@ Notable aspects of technology
 * Hardware light following with photoresistors
 
 ![Block diagram of system](https://puu.sh/EE9v2/595842362b.png)
+
+
+
+#### Made with Brandon Mosher, Rohan Mallya, and Charlie Light for University of Michigan EECS 373
