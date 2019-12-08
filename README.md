@@ -1,11 +1,27 @@
 # Pacman-Bots
-
-This project was created to learn about embedded systems and FPGAs. 
-
-### What it is
 There are two systems, the Game Master and the Robots. The Game Master controls the play field, a maze lit by leds. It also controls the position of Pacman and tells the Ghosts where to go to find him using A*. Lastly, it controls the win and lose conditions for the game. The player uses an N64 controller to move Pacman along the gridlines of the leds to try and get all the pellets before the ghosts get him.
 
-### Technology
+### Watch this video to see it in action
+[![Watch the video](https://i.imgur.com/N0LvHEk.jpg)](https://www.youtube.com/watch?v=sG0ARsvOe4A)
+
+## Implementation
+### Gamemaster
+- Communicates with N64 controller to get player input
+- Manages game states and play field
+- Updates LEDs using hacky UART signal instead of bit banging
+- Updates ghost AI location based on A* algorithm
+- Manages win/lose conditions
+- Changes LED colors to inform Pacman where to go
+
+### Pacman Robot
+- Uses light sensing on photodiodes to determine direction to move
+- H Bridge controls for motor
+- Follows certain intensity of light
+- Photoresistors change resistance based on surrounding light
+- Difference in resistance is detected via ADC
+- Calculate appropriate direction to move based on this
+
+## Technology
 This project uses a Cortex-M3 microcontroller with an FPGA for each subsystem. 
 
 Notable aspects of technology
